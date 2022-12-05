@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=B612:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <title>Document</title>
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: "B612", "sans-serif";
+      font-size: 60px;
+      background-color: rgb(56, 109, 224);
+      box-sizing: border-box;
+    }
+
+    table {
+      width: 400px;
+      height: 700px;
+      border-collapse: collapse;
+      background: linear-gradient(to bottom, rgb(88, 210, 247), rgb(0, 32, 173)) ;
+      /* 水平置中 */
+      margin: auto;
+      /* 垂直置中 */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0px 0px 25px black;
+    }
+
+    td {
+      width: 100px;
+      text-align: center;
+      color: white;
+    }
+
+    td:hover {
+      background: rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
+
+    table,
+    td {
+      border: 3px solid rgb(1, 32, 167);
+    }
+
+    #text {
+      height: 200px;
+      text-align: right;
+      background-color: white;
+      color: rgb(15, 79, 255);
+    }
+
+    #green {
+      background-color: rgb(22, 194, 136);
+    }
+
+    #green:hover {
+      background: rgba(22, 194, 136, 0.9);
+    }
+
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td colspan="4" id="text">0</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td></td>
+      <td>⇤</td>
+      <td>/</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>*</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>+</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>.</td>
+      <td id="green" colspan="2">=</td>
+    </tr>
+  </table>
+  <script>
+    const text = document.getElementById('text')
+    const btns = document.querySelectorAll('td:not(#text)')
+
+    for (const btn of btns) {
+      btn.onclick = () => {
+        const btnText = btn.innerText
+        if (btnText === '=') {
+          text.innerText = eval(text.innerText)
+        } else if (btnText === 'C') {
+          text.innerText = '0'
+        } else if (btnText === '⇤') {
+          let num = text.innerText.split('')
+          num.pop(-1)
+          text.innerText = num.join('')
+        } else {
+          if (text.innerText === '-' && isNaN(parseInt(btnText))) return
+
+          if (text.innerText !== '0') {
+            text.innerText += btnText
+          } else if (!['+', '*', '/'].includes(btnText)) {
+            text.innerText = btnText
+          }
+        }
+      }
+    }
+
+    document.onkeydown = event => {
+      const btnText = event.key
+      if (btnText === 'Enter' || btnText === '=') {
+        text.innerText = eval(text.innerText)
+      } else if (btnText === 'Escape') {
+        text.innerText = '0'
+      } else if (btnText === 'Backspace') {
+        let num = text.innerText.split('')
+        num.pop(-1)
+        text.innerText = num.join('')
+      } else {
+        if (text.innerText === '-' && isNaN(parseInt(btnText))) return
+
+        if (text.innerText !== '0') {
+          text.innerText += btnText
+        } else if (!['+', '*', '/'].includes(btnText)) {
+          text.innerText = btnText
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
